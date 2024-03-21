@@ -27,7 +27,6 @@ enum IntoColorError {
     IntConversion,
 }
 
-// I AM NOT DONE
 
 // Your task is to complete this implementation and return an Ok result of inner
 // type Color. You need to create an implementation for a tuple of three
@@ -41,6 +40,23 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let r = u8::try_from(tuple.0);
+        let g = u8::try_from(tuple.1);
+        let b = u8::try_from(tuple.2);
+
+        if r.is_err() || g.is_err() || b.is_err() {
+            return Err(IntoColorError::IntConversion);
+        }
+
+        let r = r.unwrap();
+        let g = g.unwrap();
+        let b = b.unwrap();
+
+        Ok(Color{
+            red: r,
+            green: g,
+            blue: b,
+        })
     }
 }
 
@@ -48,6 +64,23 @@ impl TryFrom<(i16, i16, i16)> for Color {
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        let r = u8::try_from(arr[0]);
+        let g = u8::try_from(arr[1]);
+        let b = u8::try_from(arr[2]);
+
+        if r.is_err() || g.is_err() || b.is_err() {
+            return Err(IntoColorError::IntConversion);
+        }
+
+        let r = r.unwrap();
+        let g = g.unwrap();
+        let b = b.unwrap();
+
+        Ok(Color{
+            red: r,
+            green: g,
+            blue: b,
+        })
     }
 }
 
@@ -55,6 +88,26 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        if slice.len() != 3 {
+            return Err(IntoColorError::BadLen);
+        }
+        let r = u8::try_from(slice[0]);
+        let g = u8::try_from(slice[1]);
+        let b = u8::try_from(slice[2]);
+
+        if r.is_err() || g.is_err() || b.is_err() {
+            return Err(IntoColorError::IntConversion);
+        }
+
+        let r = r.unwrap();
+        let g = g.unwrap();
+        let b = b.unwrap();
+
+        Ok(Color{
+            red: r,
+            green: g,
+            blue: b,
+        })
     }
 }
 
